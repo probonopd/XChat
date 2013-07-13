@@ -456,7 +456,8 @@ plugin_hook_find (GSList *list, int type, char *name)
 	while (list)
 	{
 		hook = list->data;
-		if (hook->type == type)
+		/* data may have potentially been empty, but if not, compare to type looking for */
+		if (hook && hook->type == type)
 		{
 			if (strcasecmp (hook->name, name) == 0)
 				return list;
