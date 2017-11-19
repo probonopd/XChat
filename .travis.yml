@@ -4,16 +4,16 @@ sudo: require
 dist: trusty
 
 install:
-  - sudo apt-get -y install automake autoconf libtool libproxy-dev libnotify-dev bison libssl-dev libglib2.0-dev libgtk2.0-dev libperl-dev gettext libtool zlib1g-dev perl python-dev tcl-dev autotools-dev libdbus-glib-1-dev libgtkspell-dev libsexy-dev 
+  - sudo apt-get -y install automake autoconf libtool libproxy-dev libnotify-dev bison libssl-dev libglib2.0-dev libgtk2.0-dev libperl-dev gettext libtool zlib1g-dev perl python-dev tcl-dev autotools-dev libdbus-glib-1-dev libgtkspell-dev libsexy-dev autopoint
 
 script:
   - touch ./NEWS # Undocumented; workaround for: Makefile.am: error: required file './NEWS' not found
   - # aclocal # Undocumented
-  - # autoconf
-  - autoreconf -fis # Undocumented on http://xchat.org/compiling/; autoconf gives "configure.in:11: error: possibly undefined macro: AM_INIT_AUTOMAKE"
+  - # autoconf "configure.in:11: error: possibly undefined macro: AM_INIT_AUTOMAKE"
   - autoheader # Undocumented
   - libtoolize # Undocumented
   - automake --add-missing # Undocumented
+  - autoreconf -fis # Undocumented on http://xchat.org/compiling/; autoconf give
   - ./configure --prefix=/usr
   - make -j$(nproc)
   - make install DESTDIR=$(readlink -f appdir) ; find appdir/
