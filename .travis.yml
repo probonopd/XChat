@@ -10,10 +10,11 @@ script:
   - touch ./NEWS # Undocumented; workaround for: Makefile.am: error: required file './NEWS' not found
   - # aclocal # Undocumented
   - # autoconf "configure.in:11: error: possibly undefined macro: AM_INIT_AUTOMAKE"
-  - autoheader # Undocumented
-  - libtoolize # Undocumented
-  - automake --add-missing # Undocumented
-  - autoreconf -fis # Undocumented on http://xchat.org/compiling/; autoconf give
+  - #autoheader # Undocumented
+  - #libtoolize # Undocumented
+  - ./autogen.sh
+  - #autoreconf -fis # Undocumented on http://xchat.org/compiling/; autoconf give
+  - #automake --add-missing # Undocumented
   - ./configure --prefix=/usr
   - make -j$(nproc)
   - make install DESTDIR=$(readlink -f appdir) ; find appdir/
