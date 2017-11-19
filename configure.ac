@@ -29,6 +29,7 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
 ALL_LINGUAS="be ca cs de el es fi fr gl hu it ja kn ko lt mk nl pa pl pt ru sq sr sv th uk vi zh_CN zh_TW"
 AM_GNU_GETTEXT
 AM_GNU_GETTEXT_VERSION([0.13])
+AC_CONFIG_MACRO_DIRS([m4])
 
 dnl displaced from acconfig.h
 AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
