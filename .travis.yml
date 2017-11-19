@@ -1,0 +1,37 @@
+language: cpp
+compiler: gcc
+sudo: require
+dist: trusty
+
+install:
+  - sudo apt-get -y install automake autoconf libtool libproxy-dev libnotify-dev bison libssl-dev libglib2.0-dev libgtk2.0-dev libperl-dev gettext libtool zlib1g-dev perl python-dev tcl-dev autotools-dev libdbus-glib-1-dev libgtkspell-dev libsexy-dev autopoint
+
+script:
+  - touch ./NEWS # Undocumented; workaround for: Makefile.am: error: required file './NEWS' not found
+  - # aclocal # Undocumented
+  - # autoconf "configure.in:11: error: possibly undefined macro: AM_INIT_AUTOMAKE"
+  - #autoheader # Undocumented
+  - #libtoolize # Undocumented
+  - ./autogen.sh
+  - #autoreconf -fis # Undocumented on http://xchat.org/compiling/; autoconf give
+  - #automake --add-missing # Undocumented
+  - ./configure --prefix=/usr
+  - make -j$(nproc)
+  - make install DESTDIR=$(readlink -f appdir) ; find appdir/
+  - wget -c -q "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+  - chmod a+x linuxdeployqt*.AppImage
+  - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+  - export VERSION=$(git rev-parse --short HEAD) # linuxdeployqt uses this for naming the file
+  - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
+  - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage
+
+after_success:
+  - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
+  - # curl --upload-file ./APPNAME*.AppImage https://transfer.sh/APPNAME-git.$(git rev-parse --short HEAD)-x86_64.AppImage
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash upload.sh ./XChat*.AppImage*
+  
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)$/

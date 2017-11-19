@@ -2,7 +2,7 @@ localedir = $(datadir)/locale
 
 bin_PROGRAMS = xchat
 
-INCLUDES = $(GUI_CFLAGS) -DG_DISABLE_CAST_CHECKS -DLOCALEDIR=\"$(localedir)\"
+AM_CPPFLAGS = $(GUI_CFLAGS) -DG_DISABLE_CAST_CHECKS -DLOCALEDIR=\"$(localedir)\"
 
 xchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS)
 
